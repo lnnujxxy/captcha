@@ -7,11 +7,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/dchest/captcha"
 	"io"
 	"log"
 	"net/http"
 	"text/template"
+
+	"github.com/lnnujxxy/captcha"
 )
 
 var formTemplate = template.Must(template.New("example").Parse(formTemplateSrc))
@@ -21,6 +22,7 @@ func showFormHandler(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
+	captcha.SetCustomStore(captcha.NewRedis("localhost:6379", ""))
 	d := struct {
 		CaptchaId string
 	}{
